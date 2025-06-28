@@ -9,9 +9,10 @@ A simple contacts management application with Create, Read, Update, and Delete f
 ## Features
 - ✅ Display list of contacts
 - ✅ Add new contacts
-- ✅ Delete contacts
+- ❌ Delete contacts
 - ✅ Update contact information
 - ✅ Loading indicator
+
 
 ## How to Run
 1. Clone this repository
@@ -19,7 +20,13 @@ A simple contacts management application with Create, Read, Update, and Delete f
 3. Start managing your contacts!
 
 ## Team Contributions
-TO DO
+1. Ana : HTML 
+2. Werka : CSS, java
 
 ## Technologies Used
-TO DO
+1. add td elements
+2. update functions
+3. start document
+
+
+
