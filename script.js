@@ -1,92 +1,74 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Javascript Challenge - CRUD Contacts App</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
+// JavaScript file: main.js
 
-<body>
-    <div class="header">
-        <h1>🏃‍♀️Run for Good</h1>
-        <p>Charity Marathon Registration - Berlin, July 2025</p>
-        <p>Join us in making a difference!</p>
-        <p>Register now to participate in our charity marathon and help us reach our fundraising goal! All proceeds go to a local charity.</p>
-    </div>
+document.addEventListener('DOMContentLoaded', () => {
+    const participantCountElement = document.getElementById('participantCount');
+    const participantsList = document.getElementById('participantsList');
+    const registerBtn = document.getElementById('registerBtn');
+    const successMessage = document.getElementById('successMessage');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const registrationForm = document.getElementById('registrationForm');
+    
+    let participantCount = 0;
+    let participants = [];
 
-    <div class="stats">
-        <h2>Registration Stats</h2>
-        <p>Current participants: <strong id="participantCount">0</strong></p>
-        <p>Target: <strong>100 runners</strong></p>
-        <p>Target amount: <strong>EUR 5000</strong></p>
+    // Simulate fetching participants from a server
+    function loadParticipants() {
+        loadingMessage.style.display = 'block';
+        setTimeout(() => {
+            participants = [
+                { name: 'John Doe', email: 'john@example.com', phone: '123-456-7890' },
+                { name: 'Jane Smith', email: 'jane@example.com', phone: '987-654-3210' }
+            ];
+            updateParticipantList();
+            loadingMessage.style.display = 'none';
+        }, 1000);
+    }
 
-        <!-- ✅ NEW: Progress Bar -->
-        <div class="progress-bar">
-            <label for="donationProgress">Fundraising Progress:</label>
-            <progress id="donationProgress" value="0" max="5000"></progress>
-            <span id="donationAmount">€0</span>
-        </div>
-    </div>
+    function updateParticipantList() {
+        participantsList.innerHTML = '';
+        participants.forEach(participant => {
+            const card = document.createElement('div');
+            card.classList.add('participant-card');
+            card.innerHTML = `
+                <div class="participant-info">
+                    <h3>${participant.name}</h3>
+                    <p>${participant.email}</p>
+                    <p>${participant.phone}</p>
+                </div>
+                <div class="participant-actions">
+                    <button class="btn-edit">Edit</button>
+                    <button class="btn-danger">Remove</button>
+                </div>
+            `;
+            participantsList.appendChild(card);
+        });
+        participantCountElement.textContent = participants.length;
+    }
 
-    <form id="registrationForm">
-        <div class="form-group">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age" min="16" max="99" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select id="gender" required>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-        </div>
+    // Handle form submission
+    registrationForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-        <!-- ✅ NEW: Optional Donation -->
-        <div class="form-group">
-            <label for="donation">Optional Donation (EUR):</label>
-            <input type="number" id="donation" min="0" step="1" placeholder="e.g., 50">
-        </div>
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
 
-        <button type="submit" class="btn">Register</button>
-    </form>
+        // Add participant to the list
+        participants.push({ name, email, phone });
+        updateParticipantList();
 
-    <div class="participants-section">
-        <h2 class="participants-header">Registered Participants</h2>
+        // Show success message
+        successMessage.style.display = 'block';
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 3000);
+    });
 
-        <!-- ✅ NEW: Filter by Gender -->
-        <div class="form-group">
-            <label for="genderFilter">Filter by Gender:</label>
-            <select id="genderFilter">
-                <option value="">All</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-        </div>
+    // Load initial participants on page load
+    loadParticipants();
 
-        <div id="participantsList" class="participants-list">
-            <div class="loading">
-                <p>Loading participants...</p>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/script.js"></script>
-</body>
-</html>
+    // Register button click action
+    registerBtn.addEventListener('click', () => {
+        registrationForm.scrollIntoView({ behavior: 'smooth' });
+    });
+});
