@@ -23,10 +23,6 @@ A simple contacts management application with Create, Read, Update, and Delete f
 1. Ana : update and delete , Java, css 
 2. Werka : create and read operations, CSS, Java 
 
-## Technologies Used
-1. add td elements
-2. update functions
-3. start document
 
 
 
