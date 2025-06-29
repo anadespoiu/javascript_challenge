@@ -10,7 +10,7 @@ A simple contacts management application with Create, Read, Update, and Delete f
 - ✅ Display list of contacts
 - ✅ Add new contacts
 - ❌ Delete contacts
-- ✅ Update contact information
+- ✅ Update contact information 
 - ✅ Loading indicator
 
 
@@ -20,8 +20,8 @@ A simple contacts management application with Create, Read, Update, and Delete f
 3. Start managing your contacts!
 
 ## Team Contributions
-1. Ana : update and delete , Java, css, HTML 
-2. Werka : create and read operations, CSS, Java, HTML 
+1. Ana : update and delete , Java, css 
+2. Werka : create and read operations, CSS, Java 
 
 ## Technologies Used
 1. add td elements
