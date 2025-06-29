@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Javascript Challenge - CRUD Contacts App</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<div class="header">
+<body>
+    <div class="header">
         <h1>🏃‍♀️Run for Good</h1>
         <p>Charity Marathon Registration - Berlin, july 2025 </p>
         <p>Join us in making a difference!</p>
@@ -37,7 +38,6 @@
         <input type="email" id="email" required>
     </div>
     
-    <!-- NEW GENDER FIELD -->
     <div class="form-group">
         <label for="gender">Gender:</label>
         <select id="gender" required>
@@ -55,13 +55,12 @@
     <div class="participants-section">
         <h2 class="participants-header">Registered Participants</h2>
         <div id="participantsList" class="participants-list">
-            <div class="loading">
+                <div class="loading">
                 <p>Loading participants...</p>
-            </div>
+                </div>
         </div>
     </div>
 <body>
-
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
