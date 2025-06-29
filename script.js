@@ -1,74 +1,157 @@
-// JavaScript file: main.js
+//Werka - participant registration, display, and management
 
-document.addEventListener('DOMContentLoaded', () => {
-    const participantCountElement = document.getElementById('participantCount');
-    const participantsList = document.getElementById('participantsList');
-    const registerBtn = document.getElementById('registerBtn');
-    const successMessage = document.getElementById('successMessage');
-    const loadingMessage = document.getElementById('loadingMessage');
-    const registrationForm = document.getElementById('registrationForm');
+const initialParticipants = [
+    { id: 1, name: 'Werka', age: 32, email: 'werka@email.com', gender: 'Female' },
+    { id: 2, name: 'Ana Maria Despoiu', age: 33, email: 'ana@email.com', gender: 'Female' },
+];
+
+let participants = [...initialParticipants];
+
+let nextId = 3;
+
+window.participants = participants;
+
+function loadParticipants() {
+    document.getElementById('participantsList').innerHTML = '<p>Loading participants...</p>';
     
-    let participantCount = 0;
-    let participants = [];
+    setTimeout(function() {
+        renderParticipants();
+        updateParticipantCount(); 
+        document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+    }, 1000);
+}
 
-    // Simulate fetching participants from a server
-    function loadParticipants() {
-        loadingMessage.style.display = 'block';
-        setTimeout(() => {
-            participants = [
-                { name: 'John Doe', email: 'john@example.com', phone: '123-456-7890' },
-                { name: 'Jane Smith', email: 'jane@example.com', phone: '987-654-3210' }
-            ];
-            updateParticipantList();
-            loadingMessage.style.display = 'none';
-        }, 1000);
+function renderParticipants() {
+    const participantsList = document.getElementById('participantsList');
+    
+    if (participants.length === 0) {
+        participantsList.innerHTML = '<p>No participants yet. Be the first to register!</p>';
+        return;
     }
-
-    function updateParticipantList() {
-        participantsList.innerHTML = '';
-        participants.forEach(participant => {
-            const card = document.createElement('div');
-            card.classList.add('participant-card');
-            card.innerHTML = `
+    
+    let html = '';
+    for (let i = 0; i < participants.length; i++) {
+        const participant = participants[i];
+        html += `
+            <div class="participant-card">
                 <div class="participant-info">
                     <h3>${participant.name}</h3>
-                    <p>${participant.email}</p>
-                    <p>${participant.phone}</p>
+                    <p>Age: ${participant.age} | Gender: ${participant.gender} | Email: ${participant.email}</p>
                 </div>
                 <div class="participant-actions">
-                    <button class="btn-edit">Edit</button>
-                    <button class="btn-danger">Remove</button>
+                    <button class="btn btn-edit" onclick="editParticipant(${participant.id})">
+                        Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteParticipant(${participant.id})">
+                        Delete
+                    </button>
                 </div>
-            `;
-            participantsList.appendChild(card);
-        });
-        participantCountElement.textContent = participants.length;
+            </div>
+        `;
     }
+    
+    participantsList.innerHTML = html;
+}
 
-    // Handle form submission
-    registrationForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+function addParticipant(formData) {
+    const newParticipant = {
+        id: nextId,
+        name: formData.name,
+        age: parseInt(formData.age),
+        email: formData.email,
+        gender: formData.gender
+    };
+    
+    participants.push(newParticipant);
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
+    document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+    
+    nextId++;
+    
+    renderParticipants();
+    
+    updateParticipantCount();
+    
+    showMessage('New participant registered! 🎉');
+}
 
-        // Add participant to the list
-        participants.push({ name, email, phone });
-        updateParticipantList();
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        age: document.getElementById('age').value,
+        email: document.getElementById('email').value,
+        gender: document.getElementById('gender').value
+    };
+    
+    addParticipant(formData);
+    
+    document.getElementById('registrationForm').reset();
+}
 
-        // Show success message
-        successMessage.style.display = 'block';
-        setTimeout(() => {
-            successMessage.style.display = 'none';
-        }, 3000);
-    });
-
-    // Load initial participants on page load
+function showMessage(message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = message;
+    messageDiv.className = 'success-message';
+    
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(function() {
+        document.body.removeChild(messageDiv);
+    }, 3000);
+}
+    
+ function startApp() {
+    document.getElementById('registrationForm').addEventListener('submit', handleFormSubmit);
+    
     loadParticipants();
+}
 
-    // Register button click action
-    registerBtn.addEventListener('click', () => {
-        registrationForm.scrollIntoView({ behavior: 'smooth' });
-    });
-});
+window.addEventListener('load', startApp);
+
+//Ana - participant editing, and deletion
+
+function deleteParticipant(id) {
+    if (confirm('Remove this participant?')) {
+        
+        participants = participants.filter(participant => participant.id !== id);
+        
+        renderParticipants();
+        
+        updateParticipantCount();
+
+        document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+
+    }
+}
+
+function editParticipant(id) {
+    const participant = participants.find(p => p.id === id);
+    
+    const newName = prompt('Enter new name:', participant.name);
+    const newAge = prompt('Enter new age:', participant.age);
+    const newEmail = prompt('Enter new email:', participant.email);
+    const newGender = prompt('Enter new gender:', participant.gender);
+    
+    if (newName && newAge && newEmail) {
+        
+        participant.name = newName;
+        participant.age = parseInt(newAge);
+        participant.email = newEmail;
+        participant.gender = newGender;
+        
+        renderParticipants();
+        
+        updateParticipantCount();
+
+        document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+    }
+}
+
+function updateParticipantCount() {
+    const count = participants.length;
+    
+    document.getElementById('participantCount').textContent = count;
+}
+

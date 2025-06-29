@@ -17,11 +17,11 @@ A simple contacts management application with Create, Read, Update, and Delete f
 ## How to Run
 1. Clone this repository
 2. Open `index.html` in your browser
-
+3. Test the app 
 
 ## Team Contributions
-1. Ana : html update and delete , Java, css 
-2. Werka : create and read operations, CSS, Java 
+1. Ana :  HTML file, JavaScript edit and delete operations, extra feature of counting enrolled participants (in plan : amount of money raised)
+2. Werka :  CSS file, JavaScript create and read operations
 
 
 
