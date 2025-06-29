@@ -1,92 +1,157 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Javascript Challenge - CRUD Contacts App</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
+//Werka - participant registration, display, and management
 
-<body>
-    <div class="header">
-        <h1>🏃‍♀️Run for Good</h1>
-        <p>Charity Marathon Registration - Berlin, July 2025</p>
-        <p>Join us in making a difference!</p>
-        <p>Register now to participate in our charity marathon and help us reach our fundraising goal! All proceeds go to a local charity.</p>
-    </div>
+const initialParticipants = [
+    { id: 1, name: 'Werka', age: 32, email: 'werka@email.com', gender: 'Female' },
+    { id: 2, name: 'Ana Maria Despoiu', age: 33, email: 'ana@email.com', gender: 'Female' },
+];
 
-    <div class="stats">
-        <h2>Registration Stats</h2>
-        <p>Current participants: <strong id="participantCount">0</strong></p>
-        <p>Target: <strong>100 runners</strong></p>
-        <p>Target amount: <strong>EUR 5000</strong></p>
+let participants = [...initialParticipants];
 
-        <!-- ✅ NEW: Progress Bar -->
-        <div class="progress-bar">
-            <label for="donationProgress">Fundraising Progress:</label>
-            <progress id="donationProgress" value="0" max="5000"></progress>
-            <span id="donationAmount">€0</span>
-        </div>
-    </div>
+let nextId = 3;
 
-    <form id="registrationForm">
-        <div class="form-group">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age" min="16" max="99" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select id="gender" required>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-        </div>
+window.participants = participants;
 
-        <!-- ✅ NEW: Optional Donation -->
-        <div class="form-group">
-            <label for="donation">Optional Donation (EUR):</label>
-            <input type="number" id="donation" min="0" step="1" placeholder="e.g., 50">
-        </div>
+function loadParticipants() {
+    document.getElementById('participantsList').innerHTML = '<p>Loading participants...</p>';
+    
+    setTimeout(function() {
+        renderParticipants();
+        updateParticipantCount(); 
+        document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+    }, 1000);
+}
 
-        <button type="submit" class="btn">Register</button>
-    </form>
-
-    <div class="participants-section">
-        <h2 class="participants-header">Registered Participants</h2>
-
-        <!-- ✅ NEW: Filter by Gender -->
-        <div class="form-group">
-            <label for="genderFilter">Filter by Gender:</label>
-            <select id="genderFilter">
-                <option value="">All</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-        </div>
-
-        <div id="participantsList" class="participants-list">
-            <div class="loading">
-                <p>Loading participants...</p>
+function renderParticipants() {
+    const participantsList = document.getElementById('participantsList');
+    
+    if (participants.length === 0) {
+        participantsList.innerHTML = '<p>No participants yet. Be the first to register!</p>';
+        return;
+    }
+    
+    let html = '';
+    for (let i = 0; i < participants.length; i++) {
+        const participant = participants[i];
+        html += `
+            <div class="participant-card">
+                <div class="participant-info">
+                    <h3>${participant.name}</h3>
+                    <p>Age: ${participant.age} | Gender: ${participant.gender} | Email: ${participant.email}</p>
+                </div>
+                <div class="participant-actions">
+                    <button class="btn btn-edit" onclick="editParticipant(${participant.id})">
+                        Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteParticipant(${participant.id})">
+                        Delete
+                    </button>
+                </div>
             </div>
-        </div>
-    </div>
+        `;
+    }
+    
+    participantsList.innerHTML = html;
+}
 
-    <script src="js/script.js"></script>
-</body>
-</html>
+function addParticipant(formData) {
+    const newParticipant = {
+        id: nextId,
+        name: formData.name,
+        age: parseInt(formData.age),
+        email: formData.email,
+        gender: formData.gender
+    };
+    
+    participants.push(newParticipant);
+
+    document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+    
+    nextId++;
+    
+    renderParticipants();
+    
+    updateParticipantCount();
+    
+    showMessage('New participant registered! 🎉');
+}
+
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        age: document.getElementById('age').value,
+        email: document.getElementById('email').value,
+        gender: document.getElementById('gender').value
+    };
+    
+    addParticipant(formData);
+    
+    document.getElementById('registrationForm').reset();
+}
+
+function showMessage(message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = message;
+    messageDiv.className = 'success-message';
+    
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(function() {
+        document.body.removeChild(messageDiv);
+    }, 3000);
+}
+    
+ function startApp() {
+    document.getElementById('registrationForm').addEventListener('submit', handleFormSubmit);
+    
+    loadParticipants();
+}
+
+window.addEventListener('load', startApp);
+
+//Ana - participant editing, and deletion
+
+function deleteParticipant(id) {
+    if (confirm('Remove this participant?')) {
+        
+        participants = participants.filter(participant => participant.id !== id);
+        
+        renderParticipants();
+        
+        updateParticipantCount();
+
+        document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+
+    }
+}
+
+function editParticipant(id) {
+    const participant = participants.find(p => p.id === id);
+    
+    const newName = prompt('Enter new name:', participant.name);
+    const newAge = prompt('Enter new age:', participant.age);
+    const newEmail = prompt('Enter new email:', participant.email);
+    const newGender = prompt('Enter new gender:', participant.gender);
+    
+    if (newName && newAge && newEmail) {
+        
+        participant.name = newName;
+        participant.age = parseInt(newAge);
+        participant.email = newEmail;
+        participant.gender = newGender;
+        
+        renderParticipants();
+        
+        updateParticipantCount();
+
+        document.getElementById('totalRaised').textContent = `€${participants.length * 50}`;
+    }
+}
+
+function updateParticipantCount() {
+    const count = participants.length;
+    
+    document.getElementById('participantCount').textContent = count;
+}
+

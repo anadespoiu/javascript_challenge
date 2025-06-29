@@ -1,14 +1,28 @@
-/* General Page Styles */
+:root {
+  --lila: #726da8;
+  --light-gray: #E8E8E8;
+  --medium-gray: #A8A8A8;
+  --blue: #4A90A4;
+  --dark-blue: #2E5984;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--dark-blue);
+  background: linear-gradient(135deg, var(--light-gray) 0%, white 100%);
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .header {
-    background-color: #007bff;
+    background-color: var(--lila);
     color: white;
     text-align: center;
     padding: 20px 0;
@@ -29,41 +43,21 @@ body {
     padding: 20px;
     margin: 20px auto;
     border-radius: 8px;
-    width: 80%;
+    width: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .stats h2 {
     font-size: 2em;
-    color: #333;
+    color: var(--blue);
     text-align: center;
 }
 
-.progress-bar {
-    margin-top: 20px;
-}
-
-progress {
-    width: 100%;
-    height: 25px;
-    border-radius: 8px;
-    background-color: #e0e0e0;
-    border: none;
-}
-
-#donationAmount {
-    display: block;
-    text-align: center;
-    font-size: 1.2em;
-    margin-top: 10px;
-}
-
-/* Form Styles */
 form {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    width: 80%;
+    width: 100%;
     margin: 20px auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -83,15 +77,11 @@ form input, form select {
     margin-top: 5px;
     font-size: 1em;
     border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-form input[type="number"] {
-    max-width: 100%;
+    border: 1px solid var(--medium-gray);
 }
 
 form button {
-    background-color: #007bff;
+    background-color: var(--dark-blue);
     color: white;
     padding: 10px 20px;
     font-size: 1.1em;
@@ -102,22 +92,21 @@ form button {
 }
 
 form button:hover {
-    background-color: #0056b3;
+    background-color: var(--blue);
 }
 
-/* Participants Section */
 .participants-section {
     background-color: white;
     padding: 20px;
     margin: 20px auto;
     border-radius: 8px;
-    width: 80%;
+    width: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .participants-header {
     font-size: 2em;
-    color: #333;
+    color: var(--blue);
     text-align: center;
     margin-bottom: 20px;
 }
@@ -130,15 +119,85 @@ form button:hover {
 .loading {
     text-align: center;
     font-size: 1.2em;
-    color: #007bff;
+    color: var(--blue);
 }
 
-form .form-group select {
-    font-size: 1em;
-    padding: 10px;
+.participant-card {
+    background: white;
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Optional Styling for Filters */
-#genderFilter {
-    margin-top: 10px;
+.participant-actions {
+    display: flex;
+    gap: 10px;
 }
+
+.btn-edit, .btn-danger {
+    padding: 5px 10px;
+    border: 1px solid var(--medium-gray);
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--blue);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+  
+  .header {
+    padding: 30px 20px;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  #registrationForm,
+  .stats,
+  .participants-section {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  
+    .header p {
+      font-size: 1rem;
+    }
+  }
